@@ -1,3 +1,23 @@
 h1 {
     color:green;
 }
+
+.newBook {
+  background-color: aquamarine;
+  display:flex;
+  width: 500px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  margin: 20px;
+  gap: 10px;
+  padding: 20px;
+}
+
+.finishedButton {
+    background-color: green;
+}
+
+.unfinishedButton {
+    background-color: red;
+}
