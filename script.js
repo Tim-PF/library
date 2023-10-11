@@ -1,8 +1,8 @@
 console.log("Linked right")
 
 
-
-const myLibrary = [];
+let myLibrary = [];
+const existingTitles = new Set(); 
 
 
 function Book(title, author, pages, read) {
@@ -19,34 +19,14 @@ function addBookToLibrary(book) {
 };
 
 
-let theHobbit = new Book('GOT', 'J.R.R tolkien', '295', true)
-let gulliverstravels = new Book ('Gulliver', 'Mark Twain' ,'300', false)
-let theHobbit2 = new Book('GOT', 'J.R.R tolkien', '295', true)
-let gulliverstravels2 = new Book ('Gulliverddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'Mark Twain' ,'300', false)
-addBookToLibrary(theHobbit)
-addBookToLibrary(gulliverstravels2)
-addBookToLibrary(gulliverstravels)
-addBookToLibrary(theHobbit2)
 
 
 
 function pushBookToPage() {
-    for (book in myLibrary) {
+    for (book of myLibrary) {
               /* Create the div */
-              let bookAlreadyAdded = false;
-
-              // Check if the book is already on the page
-              const titleTexts = document.querySelectorAll('.titleText');
-              titleTexts.forEach(element => {
-                if (element.textContent === myLibrary[book].title) {
-                  bookAlreadyAdded = true;
-                }
-              });
-          
-              if (bookAlreadyAdded) {
-                
-                continue; // Skip this iteration if the book is already on the page
-              }
+             
+        
         let newDiv = document.createElement('div');
         let newDivButtons = document.createElement('div');
         newDiv.classList.add("newBook");
@@ -56,18 +36,18 @@ function pushBookToPage() {
 
         const titleText = document.createElement('p');
         titleText.classList.add('titleText');
-        titleText.textContent = myLibrary[book].title;
+        titleText.textContent = book.title;
 
         const authorText = document.createElement('p');
-        authorText.textContent = myLibrary[book].author;
+        authorText.textContent = book.author;
 
         const pagesText = document.createElement('p');
-        pagesText.textContent = myLibrary[book].pages
+        pagesText.textContent = book.pages
 
         //Create Read Button
 
         const readButton = document.createElement('button');
-        myLibrary[book].read == true 
+        book.read == true 
         ? (
             readButton.classList.add('finishedButton'),
             readButton.textContent = "Read"
@@ -78,11 +58,28 @@ function pushBookToPage() {
             readButton.textContent = "Not read"
             );
 
+            readButton.addEventListener('click', () => {
+                if (readButton.classList.contains('notRead')) {
+                    // If it has "notRead" class, change to "Read"
+                    readButton.classList.remove('notRead');
+                    readButton.textContent = 'Read';
+                } else {
+                    // If it doesn't have "notRead" class, change to "Not Read"
+                    readButton.classList.add('notRead');
+                    readButton.textContent = 'Not Read';
+                }
+            });
+        
         // Create Remove Button
 
         const removeButton = document.createElement('button');
         removeButton.textContent = "Remove";
         removeButton.classList.add('removeButton')
+        removeButton.addEventListener('click', (e) => {
+            title = e.target.parentNode.parentNode.firstChild.innerHTML
+            removeBook(title);
+            newDiv.remove();
+        })
 
             //   Add Elements to parent
         const main = document.querySelector('.main-grid');
@@ -111,10 +108,16 @@ formBook.addEventListener('submit', function (event) {
    pages = document.getElementById('pages').value;
     readCheckBox = document.getElementById('read');
    read = readCheckBox.checked;
-   console.log(read);
+   if (myLibrary.some(book => book.title === title)) {
+        return;
+} else {
+    console.log("Title is not in myLibrary");
+
    newBook = new Book(title,author,pages,read);
    addBookToLibrary(newBook);
+   clearBooks();
    pushBookToPage();
+}
 });
 
 
@@ -145,18 +148,23 @@ function overlayClicked() {
 }
 
 
-const buttons = document.querySelectorAll('.finishedButton');
 
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        if (button.classList.contains('notRead')) {
-            // If it has "notRead" class, change to "Read"
-            button.classList.remove('notRead');
-            button.textContent = 'Read';
-        } else {
-            // If it doesn't have "notRead" class, change to "Not Read"
-            button.classList.add('notRead');
-            button.textContent = 'Not Read';
-        }
-    });
-});
+function removeBook(title) {
+    console.log(title)
+    myLibrary = myLibrary.filter(book => book.title !== title);
+    
+    
+    
+    
+  }
+
+
+  function clearBooks() {
+    
+    const main = document.querySelector('.main-grid');
+    while (main.firstChild) {
+       
+      main.removeChild(main.firstChild);
+    }
+   
+  }
