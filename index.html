@@ -8,6 +8,26 @@
     <script src = "script.js" defer></script>
 </head>
 <body>
-    <h1>this will be a library soon!</h1>
+    <div class="popUp" id="popUp">
+        <h4>Add new Book</h4>
+        <form id="formBookSubmit">
+            <input type="text" maxlength="100" placeholder="Title" id="title">
+            <input type="text" maxlength="100" placeholder="Author" id="author">
+            <input type="number" max="10000" placeholder="Pages" id="pages">
+            <div>
+                <p>Read?</p>
+                <input type="checkbox" id="read">
+            </div>
+            <button type="Submit">Submit</button>
+        </form>
+    </div>
+    <div class="nav-bar">
+        <h1>library</h1>
+    </div>
+    <div class="main">
+        <button class="addBook">+ Add Book</button>
+        <div class="main-grid"></div>
+    </div>
+    <div class="overlay" id="overlay"></div>
 </body>
 </html>
